@@ -2,8 +2,8 @@ import React from 'react';
 
 const Home = () => {
     return (
-        <div>
-            jbbjvsfbhjbhsvhniku
+        <div className=''>
+            <button className='btn btn-secondary'>butom</button>
         </div>
     );
 };

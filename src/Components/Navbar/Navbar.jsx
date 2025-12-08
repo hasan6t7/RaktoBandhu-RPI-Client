@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 
 const Navbar = () => {
   return (
@@ -95,9 +95,9 @@ const Navbar = () => {
         </label>
 
         <div className="flex gap-2 items-center">
-          <button className="btn hidden bg-[#FF0019] hover:bg-white hover:text-[#FF0019] text-white lg:flex rounded-lg">
+          <Link to={"/signIn"}  className="btn hidden bg-[#FF0019] hover:bg-white hover:text-[#FF0019] text-white lg:flex rounded-lg">
             Sign In
-          </button>
+          </Link>
           <button className="btn hidden text-white bg-[#263087] hover:bg-white hover:text-[#263087] lg:flex rounded-lg">
             Sign Up
           </button>
