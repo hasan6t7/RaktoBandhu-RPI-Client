@@ -2,10 +2,16 @@ import React, { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router";
 
-const SignIn = () => {
+const SignUp = () => {
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const customRed = "#FF0019";
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log({ name, email, password });
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-r from-gray-100 to-gray-200 relative overflow-hidden">
@@ -20,14 +26,22 @@ const SignIn = () => {
           className="text-2xl font-extrabold text-center mb-4"
           style={{ color: customRed }}
         >
-          Welcome Back , Hero
+          Become a Life Saver Today
         </h1>
         <p className="text-center text-gray-500 mb-8">
-          Sign in to your account
+          Sign Up to your account
         </p>
 
         {/* Form */}
-        <form className="flex flex-col gap-5">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="input input-bordered w-full rounded-xl border-gray-300 
+             focus:outline-none focus:border-[#FF0019] focus:ring-1 focus:ring-[#FF0019] transition duration-300"
+          />
           <input
             type="email"
             placeholder="Email"
@@ -69,11 +83,11 @@ const SignIn = () => {
         </button>
 
         {/* Footer */}
-        <Link to={"/signUp"}>
+        <Link to={"/signIn"}>
           <p className="text-center text-gray-500 mt-6">
-            Don’t have an account?{" "}
+            Already have an account?{" "}
             <span className="font-bold text-red-600 cursor-pointer hover:underline">
-              Sign Up
+              Sign In
             </span>
           </p>
         </Link>
@@ -82,4 +96,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
