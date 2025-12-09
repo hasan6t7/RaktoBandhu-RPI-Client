@@ -1,11 +1,16 @@
 import React from 'react';
+import Hero from '../../Components/Hero/Hero';
+import About from '../../Components/About/About';
+import OurImpact from '../../Components/Our Impact/OurImpact';
 
 const Home = () => {
     return (
         <div className=''>
-            <button className='btn btn-secondary'>butom</button>
+            <Hero></Hero>
+            <About></About>
+            <OurImpact></OurImpact>
         </div>
     );
 };
 
-export default Home;
+export default Home; 
