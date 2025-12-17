@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router";
 import Navbar from "../Components/Navbar/Navbar";
+import Footer from "../Components/Footer/Footer";
 
 const Root = () => {
   return (
@@ -11,7 +12,9 @@ const Root = () => {
       <main className="max-w-[1500px] mx-auto">
         <Outlet></Outlet>
       </main>
-      <footer>footer</footer>
+      <footer>
+        <Footer></Footer>
+      </footer>
     </div>
   );
 };

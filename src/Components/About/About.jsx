@@ -6,13 +6,13 @@ const About = () => {
     <div className="px-6 flex flex-col items-center lg:flex-row">
       <div className="hidden lg:block flex-1">
         <motion.img
-          src="https://i.ibb.co.com/4RB4H61Z/Rectangle-5.png"
+          src="https://i.ibb.co.com/ymSp5Fgk/service.jpg"
           animate={{ y: [50, 100, 50] }}
           transition={{ duration: 10, repeat: Infinity }}
-          className="max-w-sm w-80 rounded-t-[40px] rounded-br-[40px] rounded-bl-[40px] border-l-2 border-t-2 border-b-2 border-[#FF0019] shadow-2xl"
+          className="max-w-sm w-96 rounded-t-[40px] rounded-br-[40px] rounded-bl-[40px] border-l-2 border-t-2 border-b-2 border-[#FF0019] shadow-2xl"
         />
         <motion.img
-          src="https://i.ibb.co.com/fGybtYqv/Donating-pic2.jpg"
+          src="https://i.ibb.co.com/5hfrrB65/PONG.jpg"
           animate={{ x: [100, 150, 100] }}
           transition={{ duration: 10, delay: 5, repeat: Infinity }}
           className="max-w-sm w-80 rounded-t-[40px] rounded-br-[40px] rounded-bl-[40px] border-l-2 border-b-2 border-[#FF0019] shadow-2xl"
