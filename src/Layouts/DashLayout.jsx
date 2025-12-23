@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router";
+import { NavLink, Outlet} from "react-router";
 
 import { AiFillHome } from "react-icons/ai";
 import { BsFileEarmarkText } from "react-icons/bs";
@@ -10,10 +10,9 @@ import axios from "axios";
 import { getBaseUrl } from "../utils/useGetUrl";
 
 const DashLayout = () => {
-  const { loading, user, } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const [role, setRole] = useState(null);
+  const { loading, user } = useContext(AuthContext);
  
+  const [role, setRole] = useState(null);
 
   useEffect(() => {
     if (user?.email) {
@@ -23,7 +22,6 @@ const DashLayout = () => {
           const data = res.data.data;
           const role = data.role;
           setRole(role);
-        
         })
         .catch((err) => {
           console.error("Error fetching role:", err);
@@ -79,19 +77,21 @@ const DashLayout = () => {
 
         <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4 space-y-1">
           {/* Logo */}
-          <div
-            onClick={() => navigate("/")}
-            className="flex items-center gap-2 mb-4 cursor-pointer"
-          >
-            <h4 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-green-400 to-green-600 bg-clip-text text-transparent">
-              WorkSync
-            </h4>
-          </div>
+          <NavLink className="navbar-start" to={"/"}>
+            <img
+              className="size-14"
+              src="https://i.ibb.co.com/NnSPQd66/2.png"
+              alt=""
+            />
+            <p className="text-2xl font-bold text-[#FF0019]">
+              Rakto<span className="text-[#263087]">Bondhu</span>
+            </p>
+          </NavLink>
 
           {/* Universal Dashboard Home */}
           <li className="font-bold">
             <NavLink
-              className={({ isActive }) => (isActive ? "text-green-500 " : "")}
+              className={({ isActive }) => (isActive ? "text-[#FF0019] " : "")}
               to="/dashboard"
               end
             >
@@ -104,23 +104,24 @@ const DashLayout = () => {
               <li className="font-bold">
                 <NavLink
                   className={({ isActive }) =>
-                    isActive ? "text-green-500 " : ""
+                    isActive ? "text-[#FF0019] " : ""
                   }
-                  to="/dashboard/employee-list"
+                  to="/dashboard/profile"
                 >
-                  <FaUsers size={20} /> Employee List
+                  <FaUsers size={20} /> Profile
                 </NavLink>
               </li>
               <li className="font-bold">
                 <NavLink
                   className={({ isActive }) =>
-                    isActive ? "text-green-500 " : ""
+                    isActive ? "text-[#FF0019] " : ""
                   }
-                  to="/dashboard/progress"
+                  to="/dashboard/blood-request"
                 >
-                  <TbProgress size={20} /> Progress
+                  <FaUsers size={20} />Blood Request 
                 </NavLink>
               </li>
+              
             </>
           )}
 
@@ -129,7 +130,7 @@ const DashLayout = () => {
               <li>
                 <NavLink
                   className={({ isActive }) =>
-                    isActive ? "text-green-500 " : ""
+                    isActive ? "text-[#FF0019] " : ""
                   }
                   to="/dashboard/all-employee-list"
                 >
@@ -139,7 +140,7 @@ const DashLayout = () => {
               <li>
                 <NavLink
                   className={({ isActive }) =>
-                    isActive ? "text-green-500 " : ""
+                    isActive ? "text-[#FF0019] " : ""
                   }
                   to="/dashboard/payroll"
                 >
