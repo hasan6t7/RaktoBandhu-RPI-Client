@@ -1,5 +1,6 @@
 import React from "react";
 import { easeOut, motion } from "framer-motion";
+import { Link } from "react-router";
 
 const About = () => {
   return (
@@ -30,12 +31,16 @@ const About = () => {
           network where everyone can support one another during critical times.
         </p>
         <div className="flex gap-5 items-center">
-          <button className="btn px-5 py-1.5 rounded-tr-4xl rounded-br-4xl rounded-bl-4xl bg-[#FF0019] text-white">
-            About Us
-          </button>
-          <button className="btn px-5 py-1.5 rounded-tr-4xl rounded-br-4xl rounded-bl-4xl bg-[#FF0019] text-white">
-            Contact Us
-          </button>
+          <Link to={"/about"}>
+            <button className="btn px-5 py-1.5 rounded-tr-4xl rounded-br-4xl rounded-bl-4xl bg-[#FF0019] text-white">
+              About Us
+            </button>
+          </Link>
+          <Link to={"/contact"}>
+            <button className="btn px-5 py-1.5 rounded-tr-4xl rounded-br-4xl rounded-bl-4xl bg-[#FF0019] text-white">
+              Contact Us
+            </button>
+          </Link>
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import axios from "axios";
 import { getBaseUrl } from "../../utils/useGetUrl";
+import AdminDashboard from "./Admin/AdHome";
 
 const Dashboard = () => {
   const { loading, user } = useContext(AuthContext);
@@ -33,7 +34,7 @@ const Dashboard = () => {
   if (role === "admin") {
     return <div>admin</div>;
   } else if (role === "user") {
-    return <div>usrer</div>;
+    return <AdminDashboard></AdminDashboard>;
   } else {
     return <p>Unathorized</p>;
   }

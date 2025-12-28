@@ -12,7 +12,7 @@ const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 const EditProfile = () => {
   const { user, loading } = useContext(AuthContext);
   const [userData , setUserData] = useState(null)
-  console.log(userData)
+  
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -30,7 +30,7 @@ const EditProfile = () => {
   useEffect(() => {
     if (user?.email) {
       axios
-        .get(`${getBaseUrl()}api/auth/users/${user.email}`)
+        .get(`${getBaseUrl()}api/donor/${user.email}`)
         .then((res) => {
           const data = res.data.data;
           setUserData(data)
@@ -40,8 +40,7 @@ const EditProfile = () => {
             email: data.email || "",
             bloodGroup: data.bloodGroup || "",
             district: data.district || "",
-            upazila: data.upazila || "",
-            photo: data.photo || "",
+            upazilla: data.upazilla || "",           
             available: data.available ?? true,
             lastDonation: data.lastDonation
               ? new Date(data.lastDonation).toISOString().split("T")[0]
@@ -77,9 +76,10 @@ const EditProfile = () => {
     e.preventDefault();
     try {
       const userId = userData._id;
-      await axios.put(`${getBaseUrl()}api/auth/update-profile/${userId}`, formData);
+      console.log(userId)
+      await axios.put(`${getBaseUrl()}api/donor/update-profile/${userId}`, formData);
       alert("Profile updated successfully!");
-      navigate("/user-profile");
+      navigate("/dashboard/profile");
     } catch (err) {
       console.error(err);
       alert("Failed to update profile.");
@@ -95,24 +95,7 @@ const EditProfile = () => {
 
         <form className="space-y-4" onSubmit={handleSubmit}>
           {/* Photo */}
-          <div>
-            <label className="font-semibold">Photo URL</label>
-            <input
-              type="text"
-              name="photo"
-              value={formData.photo}
-              onChange={handleChange}
-              placeholder="Enter photo URL"
-              className="input input-bordered w-full rounded-xl border-gray-300 focus:border-[#FF0019] focus:ring-[#FF0019]"
-            />
-            {formData.photo && (
-              <img
-                src={formData.photo}
-                alt="avatar"
-                className="w-24 h-24 mt-2 rounded-full object-cover"
-              />
-            )}
-          </div>
+          
 
           {/* Name */}
           <div>
@@ -193,8 +176,8 @@ const EditProfile = () => {
           <div>
             <label className="font-semibold">Upazila</label>
             <select
-              name="upazila"
-              value={formData.upazila}
+              name="upazilla"
+              value={formData.upazilla}
               onChange={handleChange}
               disabled={!formData.district}
               className="input input-bordered w-full rounded-xl border-gray-300 focus:border-[#FF0019] focus:ring-[#FF0019]"
@@ -209,7 +192,7 @@ const EditProfile = () => {
           </div>
 
           {/* Availability */}
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <input
               type="checkbox"
               name="available"
@@ -217,7 +200,7 @@ const EditProfile = () => {
               onChange={handleChange}
             />
             <label className="font-semibold">Available for donation</label>
-          </div>
+          </div> */}
 
           {/* Last Donation */}
           <div>

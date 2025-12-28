@@ -1,15 +1,43 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import {districtsData} from "../../Auth/districts";
+import { districtsData } from "../../Auth/districts";
+import axios from "axios";
+import { getBaseUrl } from "../../../utils/useGetUrl";
+import { AuthContext } from "../../../contexts/AuthContext";
 
 function BloodRequest() {
-  const { register, handleSubmit, reset } = useForm();
+  const { user } = useContext(AuthContext);
+  
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
   const [upazillas, setUpazillas] = useState([]);
 
-  const onSubmit = function (data) {
-    console.log("Blood Request Data ", data);
-    reset();
-    setUpazillas([]);
+  const onSubmit = async function (data) {
+    try {
+      const res = await axios.post(`${getBaseUrl()}api/blood-request`, {
+        ...data,
+        requesterEmail: user?.email,
+        requesterName: user?.displayName,
+      });
+      alert(" Blood request submitted successfully!");
+      if (res.data.data.matchedDonors.length === 0) {
+        alert(" No donors found in your area");
+      } else {
+        alert(`${res.data.data.matchedDonors.length} donors found!`);
+      }
+
+      reset();
+      setUpazillas([]);
+    } catch (error) {
+      console.error("Blood request error:", error);
+
+      alert(error.response?.data?.message || "Server error! Please try again.");
+    }
   };
 
   const handleDistrictChange = function (e) {
@@ -23,15 +51,16 @@ function BloodRequest() {
   };
 
   const inputClass =
-    "w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#FF0019] focus:border-[#FF0019]";
+    "w-full rounded-xl border border-gray-300 px-3 py-2 focus:outline-none focus:border-[#FF0019] focus:ring-1 focus:ring-[#FF0019]";
 
   const labelClass = "text-sm font-medium text-gray-700";
+  const errorClass = "text-red-500 text-sm mt-1";
 
   return (
     <div className="max-w-5xl mx-auto p-6">
       <div className="bg-white shadow-xl rounded-xl p-6">
-        <h2 className="text-2xl font-bold text-center text-[#FF0019] mb-6">
-          🩸 Blood Request Form
+        <h2 className="text-3xl font-bold text-center text-[#FF0019] mb-6">
+           Blood Request Form
         </h2>
 
         <form
@@ -44,8 +73,13 @@ function BloodRequest() {
             <input
               type="text"
               className={inputClass}
-              {...register("patientName", { required: true })}
+              {...register("patientName", {
+                required: "Patient name is required",
+              })}
             />
+            {errors.patientName && (
+              <p className={errorClass}>{errors.patientName.message}</p>
+            )}
           </div>
 
           {/* Blood Group */}
@@ -53,7 +87,9 @@ function BloodRequest() {
             <label className={labelClass}>Blood Group</label>
             <select
               className={inputClass}
-              {...register("bloodGroup", { required: true })}
+              {...register("bloodGroup", {
+                required: "Blood group is required",
+              })}
             >
               <option value="">Select</option>
               <option>A+</option>
@@ -65,6 +101,9 @@ function BloodRequest() {
               <option>AB+</option>
               <option>AB-</option>
             </select>
+            {errors.bloodGroup && (
+              <p className={errorClass}>{errors.bloodGroup.message}</p>
+            )}
           </div>
 
           {/* Division */}
@@ -73,8 +112,13 @@ function BloodRequest() {
             <input
               type="text"
               className={inputClass}
-              {...register("division", { required: true })}
+              {...register("division", {
+                required: "Division is required",
+              })}
             />
+            {errors.division && (
+              <p className={errorClass}>{errors.division.message}</p>
+            )}
           </div>
 
           {/* District */}
@@ -82,7 +126,9 @@ function BloodRequest() {
             <label className={labelClass}>District</label>
             <select
               className={inputClass}
-              {...register("district", { required: true })}
+              {...register("district", {
+                required: "District is required",
+              })}
               onChange={handleDistrictChange}
             >
               <option value="">Select District</option>
@@ -94,6 +140,9 @@ function BloodRequest() {
                 );
               })}
             </select>
+            {errors.district && (
+              <p className={errorClass}>{errors.district.message}</p>
+            )}
           </div>
 
           {/* Upazilla */}
@@ -101,7 +150,9 @@ function BloodRequest() {
             <label className={labelClass}>Upazilla</label>
             <select
               className={inputClass}
-              {...register("upazilla", { required: true })}
+              {...register("upazilla", {
+                required: "Upazilla is required",
+              })}
               disabled={upazillas.length === 0}
             >
               <option value="">Select Upazilla</option>
@@ -113,9 +164,12 @@ function BloodRequest() {
                 );
               })}
             </select>
+            {errors.upazilla && (
+              <p className={errorClass}>{errors.upazilla.message}</p>
+            )}
           </div>
 
-          {/* Blood Donate Center */}
+          {/* Donate Center */}
           <div>
             <label className={labelClass}>Blood Donate Center</label>
             <input
@@ -131,8 +185,13 @@ function BloodRequest() {
             <input
               type="tel"
               className={inputClass}
-              {...register("contactNumber", { required: true })}
+              {...register("contactNumber", {
+                required: "Contact number is required",
+              })}
             />
+            {errors.contactNumber && (
+              <p className={errorClass}>{errors.contactNumber.message}</p>
+            )}
           </div>
 
           {/* Blood Quantity */}
@@ -141,8 +200,14 @@ function BloodRequest() {
             <input
               type="number"
               className={inputClass}
-              {...register("bloodQuantity", { required: true })}
+              {...register("bloodQuantity", {
+                required: "Blood quantity is required",
+                min: { value: 1, message: "Minimum 1 bag required" },
+              })}
             />
+            {errors.bloodQuantity && (
+              <p className={errorClass}>{errors.bloodQuantity.message}</p>
+            )}
           </div>
 
           {/* Date */}
@@ -151,8 +216,9 @@ function BloodRequest() {
             <input
               type="date"
               className={inputClass}
-              {...register("date", { required: true })}
+              {...register("date", { required: "Date is required" })}
             />
+            {errors.date && <p className={errorClass}>{errors.date.message}</p>}
           </div>
 
           {/* Time */}
@@ -161,8 +227,9 @@ function BloodRequest() {
             <input
               type="time"
               className={inputClass}
-              {...register("time", { required: true })}
+              {...register("time", { required: "Time is required" })}
             />
+            {errors.time && <p className={errorClass}>{errors.time.message}</p>}
           </div>
 
           {/* Patient Problem */}
@@ -171,15 +238,20 @@ function BloodRequest() {
             <textarea
               rows="3"
               className={inputClass}
-              {...register("patientProblem", { required: true })}
+              {...register("patientProblem", {
+                required: "Patient problem is required",
+              })}
             ></textarea>
+            {errors.patientProblem && (
+              <p className={errorClass}>{errors.patientProblem.message}</p>
+            )}
           </div>
 
-          {/* Submit Button */}
+          {/* Submit */}
           <div className="md:col-span-2 text-center">
             <button
               type="submit"
-              className="mt-4 bg-[#FF0019] hover:bg-red-700 text-white font-semibold px-10 py-2 rounded-md transition"
+              className="mt-4 bg-[#FF0019] hover:bg-red-700 text-white font-semibold px-10 py-2 rounded-xl transition"
             >
               🚑 Submit Blood Request
             </button>

@@ -70,14 +70,14 @@ const Navbar = () => {
             <li>Home</li>
           </NavLink>
           <NavLink
-            to={"/blood-request"}
+            to={"/become-donor"}
             className={({ isActive }) =>
               isActive
                 ? "text-[#FF0019] border-2 p-1 border-[#FF0019]"
                 : "hover:text-[#FF0019]"
             }
           >
-            <li>Blood Request</li>
+            <li>Become a Donor</li>
           </NavLink>
           <NavLink
             to={"/blood-group"}
@@ -100,14 +100,14 @@ const Navbar = () => {
             <li>Members</li>
           </NavLink>
           <NavLink
-            to={"/groups"}
+            to={"/contact"}
             className={({ isActive }) =>
               isActive
-                ? "text-[#FF0019] border-b-2 border-[#FF0019]"
+                 ? "text-[#FF0019] border-2 p-1 border-[#FF0019]"
                 : "hover:text-[#FF0019]"
             }
           >
-            <li>Groups</li>
+            <li>Contact us</li>
           </NavLink>
         </ul>
       </div>
@@ -210,14 +210,14 @@ const Navbar = () => {
             <li>Home</li>
           </NavLink>
           <NavLink
-            to={"/blood-request"}
+            to={"/become-donor"}
             className={({ isActive }) =>
               isActive
-                ? "text-[#FF0019] border-b-2 border-[#FF0019] w-max"
+                ? "text-[#FF0019] border-2 p-1 border-[#FF0019]"
                 : "hover:text-[#FF0019]"
             }
           >
-            <li>Blood Request</li>
+            <li>Become a Donor</li>
           </NavLink>
           <NavLink
             to={"/blood-group"}

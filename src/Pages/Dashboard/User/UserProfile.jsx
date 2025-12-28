@@ -16,17 +16,19 @@ const PRIMARY = "#FF0019";
 const UserProfile = () => {
   const { loading, user } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
+  console.log(userData);
 
   useEffect(() => {
     if (user?.email) {
       axios
-        .get(`${getBaseUrl()}api/auth/users/${user.email}`)
+        .get(`${getBaseUrl()}api/donor/${user.email}`)
         .then((res) => setUserData(res.data.data))
         .catch((err) => console.error(err));
     }
   }, [user?.email]);
+  console.log(userData);
 
-  if (loading || !userData) {
+  if (loading) {
     return (
       <div className="flex justify-center items-center h-[60vh] text-lg font-bold text-gray-500">
         Loading profile...
@@ -36,92 +38,123 @@ const UserProfile = () => {
 
   return (
     <div className="p-6 md:p-10 ">
-      <div className="max-w-6xl mx-auto space-y-10">
-        {/* ================= HEADER ================= */}
-        <div
-          className="relative rounded-3xl p-8 md:p-10 text-white shadow-2xl overflow-hidden"
-          style={{ backgroundColor: PRIMARY }}
-        >
-          <div className="absolute -top-20 -right-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
+      {userData ? (
+        <>
+          <div className="max-w-6xl mx-auto space-y-10">
+            {/* ================= HEADER ================= */}
+            <div
+              className="relative rounded-3xl p-8 md:p-10 text-white shadow-2xl overflow-hidden"
+              style={{ backgroundColor: PRIMARY }}
+            >
+              <div className="absolute -top-20 -right-20 w-72 h-72 bg-white/10 rounded-full blur-3xl"></div>
 
-          <div className="flex flex-col md:flex-row items-center gap-6 relative z-10">
-            {/* Avatar */}
-            <div className="w-28 h-28 rounded-full bg-white text-[#FF0019] flex items-center justify-center text-4xl font-extrabold shadow-xl">
-              {userData?.name?.charAt(0)}
-            </div>
+              <div className="flex flex-col md:flex-row items-center gap-6 relative z-10">
+                {/* Avatar */}
+                <div className="w-28 h-28 rounded-full bg-white text-[#FF0019] flex items-center justify-center text-4xl font-extrabold shadow-xl">
+                  {userData?.name?.charAt(0)}
+                </div>
 
-            {/* Info */}
-            <div className="text-center md:text-left">
-              <h1 className="text-3xl font-extrabold">{userData?.name}</h1>
-              <p className="opacity-90 flex items-center gap-2 justify-center md:justify-start">
-                Blood Donor
-                {userData?.emailVerified && (
-                  <FaUserCheck className="text-green-300" />
-                )}
-              </p>
+                {/* Info */}
+                <div className="text-center md:text-left">
+                  <h1 className="text-3xl font-extrabold">{userData?.name}</h1>
+                  <p className="opacity-90 flex items-center gap-2 justify-center md:justify-start">
+                    Blood Donor
+                    {userData?.emailVerified && (
+                      <FaUserCheck className="text-green-300" />
+                    )}
+                  </p>
 
-              <div className="flex flex-wrap gap-3 mt-4 justify-center md:justify-start">
-                <Badge text={`🩸 ${userData?.bloodGroup}`} />
-                <Badge
-                  text={userData?.available ? "Available" : "Unavailable"}
-                  color={userData?.available ? "bg-green-500" : "bg-gray-400"}
-                />
+                  <div className="flex flex-wrap gap-3 mt-4 justify-center md:justify-start">
+                    <Badge text={`🩸 ${userData?.bloodGroup}`} />
+                    <Badge
+                      text={userData?.available ? "Available" : "Unavailable"}
+                      color={
+                        userData?.available ? "bg-green-500" : "bg-gray-400"
+                      }
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* ================= MAIN CONTENT ================= */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Personal Info */}
-          <Card title="Personal Information">
-            <Info icon={<FaEnvelope />} label="Email" value={userData?.email} />
-            <Info icon={<FaPhoneAlt />} label="Phone" value={userData?.phone} />
-          </Card>
+            {/* ================= MAIN CONTENT ================= */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Personal Info */}
+              <Card title="Personal Information">
+                <Info
+                  icon={<FaEnvelope />}
+                  label="Email"
+                  value={userData?.email}
+                />
+                <Info
+                  icon={<FaPhoneAlt />}
+                  label="Phone"
+                  value={userData?.phone}
+                />
+              </Card>
 
-          {/* Location */}
-          <Card title="Location">
-            <Info
-              icon={<FaMapMarkerAlt />}
-              label="District"
-              value={userData?.district}
-            />
-            <Info
-              icon={<FaMapMarkerAlt />}
-              label="Upazila"
-              value={userData?.upazila}
-            />
-          </Card>
+              {/* Location */}
+              <Card title="Location">
+                <Info
+                  icon={<FaMapMarkerAlt />}
+                  label="District"
+                  value={userData?.district}
+                />
+                <Info
+                  icon={<FaMapMarkerAlt />}
+                  label="Upazila"
+                  value={userData?.upazilla}
+                />
+              </Card>
 
-          {/* Donation Stats */}
-          <Card title="Donation Stats">
-            <Stat label="Total Donations" value={userData?.totalDonations} />
-            <Stat
-              label="Last Donation"
-              value={
-                userData?.lastDonation
-                  ? new Date(userData.lastDonation).toLocaleDateString()
-                  : "N/A"
-              }
-            />
-          </Card>
-        </div>
+              {/* Donation Stats */}
+              <Card title="Donation Stats">
+                <Stat
+                  label="Total Donations"
+                  value={userData?.totalDonations}
+                />
+                <Stat
+                  label="Last Donation"
+                  value={
+                    userData?.lastDonation
+                      ? new Date(userData.lastDonation).toLocaleDateString()
+                      : "N/A"
+                  }
+                />
+              </Card>
+            </div>
 
-        {/* ================= ACTION BUTTONS ================= */}
-        <div className="flex justify-end gap-4">
-          <Link to={`/dashboard/edit-profile/${userData?._id}`}>
-            <button className="px-6 py-3 rounded-xl border border-[#FF0019] text-[#FF0019] font-bold hover:bg-red-50 transition">
-              Edit Profile
-            </button>
-          </Link>
-          {/* <button
+            {/* ================= ACTION BUTTONS ================= */}
+            <div className="flex justify-end gap-4">
+              <Link to={`/dashboard/edit-profile/${userData?._id}`}>
+                <button className="px-6 py-3 rounded-xl border border-[#FF0019] text-[#FF0019] font-bold hover:bg-red-50 transition">
+                  Edit Profile
+                </button>
+              </Link>
+              {/* <button
             className="px-6 py-3 rounded-xl text-white font-bold shadow-lg hover:opacity-90 transition"
             style={{ backgroundColor: PRIMARY }}
           >
             Update Availability
           </button> */}
-        </div>
-      </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="flex flex-col gap-5">
+            <p className="font-bold text-3xl text-center">
+            {" "}
+            Become a Donor First{" "}
+          </p>
+          <div className="flex items-center justify-center">
+            <Link className="btn btn-primary" to={"/become-donor"}>
+            Become a Donor
+          </Link>
+          </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
